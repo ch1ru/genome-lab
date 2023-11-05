@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  rhino:
+    container_name: rhino
+    build:
+      context: ./rhino
+      dockerfile: Dockerfile
+    ports:
+      - "3838:3838"
+    volumes:
+      - rhino-volume:/mnt/docker-volume:ro
+
+volumes:
+  rhino-volume:
