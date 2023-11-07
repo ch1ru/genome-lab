@@ -8,4 +8,8 @@ box::use(
     app/view/reactiveDemo,
     app/view/qcView,
     app/view/filterQCView,
+    app/view/diagnosticPlots,
+    app/view/uploadDataView,
+    app/view/discardChartView,
+    app/view/normalizeView,
 )

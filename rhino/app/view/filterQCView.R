@@ -1,6 +1,9 @@
 box::use(
-    shiny[h3, dateInput, renderDataTable, renderPrint, verbatimTextOutput, dataTableOutput, actionButton, textOutput, fileInput, icon, checkboxGroupInput, dateRangeInput, selectInput, radioButtons, moduleServer, NS, tableOutput, reactive, textInput, sliderInput, textAreaInput, passwordInput, fluidPage, numericInput, renderText],
+    shiny[h3, dateInput, renderDataTable, plotOutput, renderPlot, renderPrint, verbatimTextOutput, dataTableOutput, actionButton, textOutput, fileInput, icon, checkboxGroupInput, dateRangeInput, selectInput, radioButtons, moduleServer, NS, tableOutput, reactive, textInput, sliderInput, textAreaInput, passwordInput, fluidPage, numericInput, renderText],
     S4Vectors,
+    SummarizedExperiment,
+    scuttle,
+    scater,
 )
 box::use(
     app/logic/qc
@@ -20,12 +23,13 @@ ui <- function(id) {
         verbatimTextOutput(ns("discard")),
         verbatimTextOutput(ns("low_lib_size")),
         verbatimTextOutput(ns("low_n_features")),
-        verbatimTextOutput(ns("outlyingness"))
+        verbatimTextOutput(ns("outlyingness")),
+        verbatimTextOutput(ns("filtered"))
     )   
 }
 
 #' @export
-server <- function(id, data) {
+server <- function(id, data, original) {
     moduleServer(id, function(input, output, session) {
 
         df <- reactive({
@@ -53,7 +57,13 @@ server <- function(id, data) {
         output$discard <- renderPrint(summary(reasons()$discard))
         output$low_lib_size <- renderPrint(attr(reasons()$low_lib_size, "thresholds"))
         output$low_n_features <- renderPrint(attr(reasons()$low_n_features, "thresholds"))
-        output$outlyingness <- reactive(summary(qc$runRobustBaseOutliers(data())))
+        output$outlyingness <- renderPrint(summary(qc$runRobustBaseOutliers(data())))
+
+        #remove low quality cells
+        output$filtered <- renderPrint(summary(original()[,!reasons$discard]))
+
+       
+
     })
 
 }

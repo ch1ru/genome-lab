@@ -32,7 +32,7 @@ runPerCellQCFilters <- function(df) {
 #' @export
 runRobustBaseOutliers <- function(df) {
     stats <- cbind(log10(df$sum), log10(df$detected), df$subsets_Mito_percent, df$altexps_ERCC_percent)
-    outlying <- adjOutlyingness(stats, only.outlyingness = TRUE)
-    multi.outlier <- isOutlier(outlying, type = "higher")
+    outlying <- robustbase::adjOutlyingness(stats, only.outlyingness = TRUE)
+    multi.outlier <- scuttle::isOutlier(outlying, type = "higher")
     return(multi.outlier)
 }

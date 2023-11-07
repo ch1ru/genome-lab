@@ -6,15 +6,19 @@
 
 .grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
+    grid-auto-rows: minmax(100px, auto);
 }
 
 .card {
     @include shadow;
     padding: 10px;
+    background: #202528;
 }
 
 body {
     margin: 20px;
+    background: #181a1e;
+    color: #edeffd;
 }
